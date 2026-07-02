@@ -9,6 +9,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![Platform](https://img.shields.io/badge/platform-Termux-green.svg)](https://termux.com/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
+[![AI Powered](https://img.shields.io/badge/AI-Powered-9cf.svg)](#acknowledgements)
 
 </div>
 
@@ -22,7 +23,7 @@
 | 2 | 👤 Username OSINT | Поиск аккаунтов по никнейму | Maigret (3000+) / Sherlock (400+) |
 | 3 | 📞 Phone OSINT | Анализ номера (страна, оператор, тип) | Google libphonenumber |
 | 4 | 🌐 Domain OSINT | WHOIS, DNS, IP Geolocation | python-whois + dnspython |
-| 5 | ️ EXIF Analyzer | Метаданные фото + GPS на карте | ExifRead |
+| 5 | 🖼️ EXIF Analyzer | Метаданные фото + GPS на карте | ExifRead |
 | 6 | 🎯 All-in-One | Комбинированный анализ всех типов | — |
 | 7 | 📦 Batch Mode | Пакетная обработка из файла | — |
 | 8 | 🔧 Proxy Manager | Ротация прокси для обхода блокировок | — |
@@ -35,6 +36,7 @@
 - 🗺️ **GPS карта** — встроенная Google Maps для EXIF
 - 🔍 **Поиск в отчётах** — фильтрация в HTML
 - 📱 **Termux-first** — оптимизировано под Android
+- 🤖 **AI-Assisted** — разработан с помощью искусственного интеллекта
 
 ---
 
@@ -72,13 +74,13 @@
     ────────────────────────── 🎯 ShadowEye v3.1 ─────────────────────────────
     │ 1. 📧 Email OSINT (Holehe) — проверка регистрации email                  │
     │ 2. 👤 Username OSINT (Maigret/Sherlock) — поиск по никнейму              │
-    │ 3.  Phone OSINT — анализ телефона                                      │
+    │ 3. 📞 Phone OSINT — анализ телефона                                      │
     │ 4. 🌐 Domain OSINT — WHOIS, DNS, IP                                      │
     │ 5. 🖼️  Image EXIF — анализ метаданных                                    │
     │ 6. 🎯 All-in-One — комбинированный анализ                                │
     │ 7. 📦 Batch Mode — пакетная обработка                                    │
     │ 8. 🔧 Настройка прокси                                                   │
-    │ 0.  Выход                                                              │
+    │ 0. 🚪 Выход                                                              │
     ──────────────────────────────────────────────────────────────────────────
 
 ### Примеры
@@ -91,7 +93,7 @@
 
 **Username OSINT:**
 
-    Введите username: "username"
+    Введите username: lixynhay
     → Maigret: 3000+ сайтов или Sherlock: 400+ сайтов
     → Найдено: GitHub, VK, Kick, Roblox...
 
@@ -106,7 +108,7 @@
 
 Создай файл `targets.txt`:
 
-    email:email@gmail.com
+    email:victim@gmail.com
     username:hacker1337
     phone:+79001234567
     domain:target.com
@@ -125,19 +127,23 @@
     │   ├── aggregator.py       # Агрегатор результатов
     │   ├── ui.py               # UI компоненты (Rich)
     │   ├── core/
+    │   │   ├── __init__.py
     │   │   ├── email_checker.py      # Holehe интеграция
     │   │   ├── username_checker.py   # Maigret + Sherlock
     │   │   ├── phone_checker.py      # Phonenumbers
     │   │   ├── domain_checker.py     # WHOIS + DNS
     │   │   └── exif_analyzer.py      # EXIF метаданные
     │   ├── utils/
+    │   │   ├── __init__.py
     │   │   ├── cache.py              # Кэш результатов
-    │   │   └── proxy_rotator.py      # Ротация прокси
+    │   │   ├── proxy_rotator.py      # Ротация прокси
+    │   │   └── html_report.py        # Генерация HTML отчётов
     │   └── sherlock_builtin/         # Встроенный Sherlock
     ├── requirements.txt
     ├── setup.py
     ├── README.md
-    └── LICENSE
+    ├── LICENSE
+    └── .gitignore
 
 ---
 
@@ -167,19 +173,6 @@
 
 ---
 
-## ⚠️ Дисклеймер
-
-Этот инструмент создан **только для образовательных целей** и легального OSINT.
-
-**Не используй для:**
-- ❌ Преследования людей
-- ❌ Несанкционированного доступа
-- ❌ Нарушения законов
-
-Автор не несёт ответственности за неправомерное использование.
-
----
-
 ## 🤝 Вклад
 
 Pull requests приветствуются! Для крупных изменений сначала открой issue.
@@ -192,9 +185,30 @@ MIT License — используй свободно.
 
 ---
 
+## 🙏 Acknowledgements
+
 <div align="center">
 
-**Сделано с ❤️ для OSINT сообщества**
+### 🤖 AI-Assisted Development
+
+**Этот проект был разработан с помощью искусственного интеллекта**
+
+Особая благодарность **[Qwen](https://github.com/QwenLM/Qwen)** (Alibaba Cloud) за помощь в:
+- 🏗️ Архитектуре проекта
+- 💻 Написании кода
+- 🐛 Дебаге и оптимизации
+- 📚 Документации
+- 🎨 UI/UX дизайне
+
+*ShadowEye — пример того, как человек и ИИ могут работать вместе для создания мощных инструментов*
+
+</div>
+
+---
+
+<div align="center">
+
+**Сделано с ❤️ и 🤖 для OSINT сообщества**
 
 *ShadowEye — видит то, что скрыто в тени* 👁️🌑
 

@@ -1,12 +1,26 @@
+# === UI ===
 rich>=13.0.0
+
+# === HTTP ===
 httpx>=0.27.0
 requests>=2.31.0
+aiohttp>=3.9.0
+
+# === OSINT Core ===
 holehe>=1.0.0
 maigret>=0.4.0
+
+# === Phone OSINT ===
 phonenumbers>=8.13.0
+
+# === Domain OSINT ===
 python-whois>=0.9.0
 dnspython>=2.6.0
+
+# === EXIF ===
 exifread>=3.0.0
+
+# === Sherlock dependencies ===
 PySocks>=1.7.0
 colorama>=0.4.6
 certifi>=2024.0.0

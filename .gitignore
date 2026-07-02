@@ -1,3 +1,4 @@
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -7,12 +8,33 @@ build/
 dist/
 *.egg-info/
 *.egg
+
+# Virtual env
 venv/
 .venv/
+env/
+
+# IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Cache
+*.cache
 .osint_toolkit_cache.json
+
+# Reports
+osint_report.*
+*.html
+
+# Proxies (НЕ коммитить)
 .osint_proxies.txt
+
+# Maigret temp
 maigret_*/
 test_maigret*/
