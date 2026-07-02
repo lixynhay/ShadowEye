@@ -26,7 +26,6 @@ setup(
         "beautifulsoup4>=4.12.0",
         "lxml>=5.0.0",
         "requests-futures>=1.0.0",
-        "stem>=1.8.0",
     ],
     entry_points={
         "console_scripts": [

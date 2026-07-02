@@ -11,15 +11,15 @@ console = Console()
 def print_banner():
     banner = """
 [bold cyan]
-  ██████╗ ███████╗███╗   ██╗ ██████╗ ████████╗███████╗██╗████████╗
- ██╔═══██╗██╔════╝████╗  ██║██╔═══██╗╚══██╔══╝██╔════╝██║╚══██╔══╝
- ██║   ██║███████╗██╔██╗ ██║██║   ██║   ██║   █████╗  ██║   ██║   
- ██║   ██║╚════██║██║╚██╗██║██║   ██║   ██║   ██╔══╝  ██║   ██║   
- ╚██████╔╝███████║██║ ╚████║╚██████╔╝   ██║   ██║     ██║   ██║   
-  ╚═════╝ ╚══════╝╚═╝  ╚═══╝ ╚═════╝    ╚═╝   ╚═╝     ╚═╝   ╚═╝   
+ ██████╗ ███████╗███╗ ██╗ ██████╗ ████████╗███████╗██╗████████╗
+ ██╔═══██╗██╔════╝████╗ ██║██╔═══██╗╚══██╔══╝██╔════╝██║╚══██╔══╝
+ ██║ ██║███████╗██╔██╗ ██║██║ ██║ ██║ █████╗ ██║ ██║
+ ██║ ██║╚════██║██║╚██╗██║██║ ██║ ██║ ██╔══╝ ██║ ██║
+ ╚██████╔╝███████║██║ ╚████║╚██████╔╝ ██║ ██║ ██║ ██║
+ ╚═════╝ ╚══════╝╚═╝ ╚═══╝ ╚═════╝ ╚═╝ ╚═╝ ╚═╝ ╚═╝
 [/bold cyan]
-[bold yellow]        OSINT Toolkit Pro v2.0 — Multi-Tool Framework[/bold yellow]
-[bold magenta]        by Dima | Email + Username + EXIF Analysis[/bold magenta]
+[bold yellow] OSINT Toolkit Pro v3.1 — Multi-Tool Framework[/bold yellow]
+[bold magenta] by Dima | Email + Username + EXIF Analysis[/bold magenta]
 """
     console.print(banner)
 
@@ -27,10 +27,10 @@ def print_menu():
     menu_items = [
         "[bold green]1.[/bold green] 📧 Email OSINT (Holehe) — проверка регистрации email",
         "[bold green]2.[/bold green] 👤 Username OSINT (Maigret) — поиск по никнейму",
-        "[bold green]3.[/bold green] 🖼️  Image EXIF — анализ метаданных изображений",
+        "[bold green]3.[/bold green] 🖼️ Image EXIF — анализ метаданных изображений",
         "[bold green]4.[/bold green] 🎯 All-in-One — комбинированный анализ",
         "[bold green]5.[/bold green] 📦 Batch Mode — пакетная обработка",
-        "[bold red]0.[/bold red]  🚪 Выход",
+        "[bold red]0.[/bold red] 🚪 Выход",
     ]
     console.print(Panel("\n".join(menu_items), title="[bold cyan]🎯 Выберите режим работы[/bold cyan]", border_style="cyan", box=box.ROUNDED))
 
@@ -64,16 +64,15 @@ def create_exif_table(exif_data: dict) -> Table:
     table.add_column("Категория", style="cyan", width=20)
     table.add_column("Тег", style="white", width=30)
     table.add_column("Значение", style="green")
-    
+
     for category, tags in exif_data.items():
         first = True
         for tag_name, value in tags.items():
-            # Убираем префикс категории из имени тега
             short_name = tag_name.split(' ', 1)[-1] if ' ' in tag_name else tag_name
             cat_display = category if first else ""
             table.add_row(cat_display, short_name, str(value))
             first = False
-    
+
     return table
 
 def create_progress():
