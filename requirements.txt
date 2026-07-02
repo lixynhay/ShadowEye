@@ -1,0 +1,17 @@
+rich>=13.0.0
+httpx>=0.27.0
+requests>=2.31.0
+aiohttp>=3.9.0
+holehe>=1.0.0
+maigret>=0.4.0
+phonenumbers>=8.13.0
+python-whois>=0.9.0
+dnspython>=2.6.0
+exifread>=3.0.0
+PySocks>=1.7.0
+colorama>=0.4.6
+certifi>=2024.0.0
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+requests-futures>=1.0.0
+stem>=1.8.0
