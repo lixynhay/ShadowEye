@@ -1,3 +1,11 @@
+# Mock pandas to avoid dependency
+class MockPandas:
+    @staticmethod
+    def DataFrame(data=None):
+        return data
+
+pd = MockPandas()
+
 #! /usr/bin/env python3
 
 """
@@ -914,7 +922,7 @@ def main():
                 exists.append(str(results[site]["status"].status))
                 http_status.append(results[site]["http_status"])
 
-            DataFrame = pd.DataFrame(
+            # DataFrame = pd.DataFrame  # Disabled pandas(
                 {
                     "username": usernames,
                     "name": names,
