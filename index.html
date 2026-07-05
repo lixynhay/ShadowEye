@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowEye | OSINT Framework</title>
+    <style>
+        :root {
+            --bg-color: #050505;
+            --primary: #00f3ff;
+            --secondary: #bc13fe;
+            --text: #e0e0e0;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .background-grid {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(var(--glass) 1px, transparent 1px),
+                linear-gradient(90deg, var(--glass) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px 50px;
+            max-width: 800px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 40px;
+        }
+
+        .screenshot-container {
+            position: relative;
+            margin: 40px auto;
+            width: 100%;
+            max-width: 700px;
+            perspective: 1000px;
+        }
+
+        .screenshot {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            box-shadow: 
+                0 0 40px rgba(0, 243, 255, 0.15),
+                0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: float 6s ease-in-out infinite;
+            transition: transform 0.3s;
+        }
+
+        .screenshot:hover {
+            transform: scale(1.02) translateY(-5px);
+            box-shadow: 0 0 60px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: #fff;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 1px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(188, 19, 254, 0.4);
+        }
+      
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+
+        .feature-icon { font-size: 2rem; margin-bottom: 15px; display: block; }
+        .feature-title { font-weight: bold; margin-bottom: 10px; color: #fff; }
+        .feature-desc { font-size: 0.9rem; color: #aaa; line-height: 1.5; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotateX(5deg); }
+            50% { transform: translateY(-20px) rotateX(0deg); }
+            100% { transform: translateY(0px) rotateX(5deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 40px;
+            color: #555;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-grid"></div>
+
+    <section class="hero">
+        <h1>ShadowEye</h1>
+        <p class="subtitle">Multi-Tool OSINT Framework for Termux & Windows</p>
+        
+        <div class="screenshot-container">
+            <img src="screenshots/menu.png" alt="ShadowEye Interface" class="screenshot">
+        </div>
+
+        <div class="btn-group">
+            <a href="https://github.com/lixynhay/ShadowEye" class="btn btn-primary">GitHub Repo</a>
+            <a href="https://pypi.org/project/shadoweye/" class="btn btn-secondary">PyPI Package</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-card">
+            <span class="feature-icon">📧</span>
+            <div class="feature-title">Email OSINT</div>
+            <div class="feature-desc">Проверка регистрации в 120+ сервисах через Holehe.</div>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">👤</span>
+            <div class="feature-title">Username Search</div>
+            <div class="feature-desc">Поиск аккаунтов по никнейму (Maigret + Sherlock).</div>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">🌐</span>
+            <div class="feature-title">Domain Intel</div>
+            <div class="feature-desc">WHOIS, DNS записи и геолокация IP адресов.</div>
+        </div>
+        <div class="feature-card">
+            <span class="feature-icon">️</span>
+            <div class="feature-title">EXIF Analysis</div>
+            <div class="feature-desc">Извлечение метаданных и GPS координат из фото.</div>
+        </div>
+    </section>
+
+    <footer>
+        Made with ❤️ by lixynhay
+    </footer>
+</body>
+</html>
