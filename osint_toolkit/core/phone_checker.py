@@ -1,4 +1,3 @@
-"""Анализ телефонных номеров через phonenumbers (Google libphonenumber)."""
 from typing import Dict, Any
 from ..ui import console
 

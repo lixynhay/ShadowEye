@@ -1,4 +1,3 @@
-"""Domain OSINT - WHOIS, DNS, IP geolocation."""
 import asyncio
 import json
 import socket

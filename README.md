@@ -8,7 +8,10 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-
+[![Windows](https://img.shields.io/badge/platform-Windows-green.svg)](https://www.microsoft.com/)
+[![Termux](https://img.shields.io/badge/platform-Termux-green.svg)](https://termux.com/)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.kernel.org/)
+[![PyPI version](https://badge.fury.io/py/shadoweye.svg)](https://badge.fury.io/py/shadoweye)
 </div>
 
 ---
@@ -62,6 +65,12 @@ python -m osint_toolkit
 ```
 
 ---
+
+## 📦 Установка из PyPI
+```
+pip install shadoweye
+shadoweye
+```
 
 ## 📖 Использование
 
@@ -145,4 +154,3 @@ Pull requests и issues приветствуются. Для крупных из
 ---
 
 **Сделано с ❤️ для OSINT сообщества**
-

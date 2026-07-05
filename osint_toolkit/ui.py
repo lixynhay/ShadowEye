@@ -1,4 +1,3 @@
-"""UI компоненты с использованием Rich library."""
 import os
 import sys
 from rich.console import Console

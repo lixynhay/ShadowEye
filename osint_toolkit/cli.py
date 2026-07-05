@@ -1,4 +1,3 @@
-"""Главный CLI интерфейс с меню выбора."""
 import os
 import sys
 import asyncio

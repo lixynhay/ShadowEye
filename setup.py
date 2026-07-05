@@ -2,12 +2,12 @@ from setuptools import setup, find_packages
 
 setup(
     name="shadoweye",
-    version="3.1.0",
-    description="Multi-Tool OSINT Framework for Termux",
+    version="3.1.1",
+    description="Multi-Tool OSINT Framework for Termux and Windows",
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type="text/markdown",
     author="lixynhay",
-    author_email="",
+    author_email="lixynhay@gmail.com",
     url="https://github.com/lixynhay/ShadowEye",
     packages=find_packages(),
     include_package_data=True,
@@ -23,6 +23,7 @@ setup(
         "exifread>=3.0.0",
         "PySocks>=1.7.0",
         "colorama>=0.4.6",
+        "certifi>=2024.0.0",
         "beautifulsoup4>=4.12.0",
         "lxml>=5.0.0",
         "requests-futures>=1.0.0",
@@ -44,8 +45,8 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Topic :: Security",
-        "Operating System :: Microsoft :: Windows",
         "Operating System :: POSIX :: Linux",
+        "Operating System :: Microsoft :: Windows",
     ],
     keywords="osint security termux email username phone domain exif",
 )

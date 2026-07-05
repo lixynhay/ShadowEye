@@ -1,4 +1,3 @@
-"""Анализ EXIF метаданных изображений - улучшенный."""
 import os
 from typing import Dict, Any, Optional, List
 from ..ui import console

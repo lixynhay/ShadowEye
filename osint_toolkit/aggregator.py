@@ -1,4 +1,3 @@
-"""Агрегатор результатов, кэш и экспорт отчётов."""
 import json
 import os
 from datetime import datetime
@@ -6,6 +5,7 @@ from typing import Dict, Any, List, Optional
 from .utils.cache import CacheManager
 from .utils.html_report import generate_html_report
 from .ui import console, print_success, print_error, print_info
+
 
 class Aggregator:
     def __init__(self):
@@ -22,10 +22,7 @@ class Aggregator:
 
     def add_email_results(self, email: str, results: List[Dict]):
         self.results["email"] = email
-        self.results["email_results"] = self.results.get("email_results", []) + [{
-            "email": email,
-            **result,
-        } for result in results]
+        self.results["email_results"] = results
         self.cache.set_email(email, results)
 
     def get_cached_email(self, email: str) -> Optional[List[Dict]]:
@@ -33,10 +30,7 @@ class Aggregator:
 
     def add_username_results(self, username: str, results: List[Dict]):
         self.results["username"] = username
-        self.results["username_results"] = self.results.get("username_results", []) + [{
-            "username": username,
-            **result,
-        } for result in results]
+        self.results["username_results"] = results
         self.cache.set_username(username, results)
 
     def get_cached_username(self, username: str) -> Optional[List[Dict]]:
@@ -77,9 +71,6 @@ class Aggregator:
 
     def export_json(self, filename: str):
         try:
-            output_dir = os.path.dirname(os.path.abspath(filename))
-            if output_dir:
-                os.makedirs(output_dir, exist_ok=True)
             with open(filename, "w", encoding="utf-8") as f:
                 json.dump(self.results, f, ensure_ascii=False, indent=2, default=str)
             print_success(f"Отчёт JSON сохранён: {os.path.abspath(filename)}")
@@ -89,9 +80,6 @@ class Aggregator:
     def export_html(self, filename: str):
         try:
             html = generate_html_report(self.results)
-            output_dir = os.path.dirname(os.path.abspath(filename))
-            if output_dir:
-                os.makedirs(output_dir, exist_ok=True)
             with open(filename, "w", encoding="utf-8") as f:
                 f.write(html)
             print_success(f"Отчёт HTML сохранён: {os.path.abspath(filename)}")

@@ -1,4 +1,3 @@
-"""Username OSINT через Sherlock."""
 import os
 import subprocess
 import sys
