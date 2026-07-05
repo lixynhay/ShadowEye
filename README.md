@@ -2,14 +2,12 @@
 
 # 👁️ ShadowEye
 
-### 🎯 Multi-Tool OSINT Framework for Termux
+### 🎯 Модульный OSINT-инструментарий
 
-**Твой карманный инструмент разведки — email, username, phone, domain, EXIF**
+**Набор утилит для разведки: email, username, phone, domain, EXIF и агрегирование результатов.**
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
-[![Platform](https://img.shields.io/badge/platform-Termux-green.svg)](https://termux.com/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-[![AI Powered](https://img.shields.io/badge/AI-Powered-9cf.svg)](#acknowledgements)
 
 </div>
 
@@ -17,199 +15,134 @@
 
 ## 🌟 Возможности
 
-| # | Режим | Описание | Движок |
-|---|-------|----------|--------|
-| 1 | 📧 Email OSINT | Проверка регистрации в 120+ сервисах | Holehe |
-| 2 | 👤 Username OSINT | Поиск аккаунтов по никнейму | Maigret (3000+) / Sherlock (400+) |
-| 3 | 📞 Phone OSINT | Анализ номера (страна, оператор, тип) | Google libphonenumber |
-| 4 | 🌐 Domain OSINT | WHOIS, DNS, IP Geolocation | python-whois + dnspython |
-| 5 | 🖼️ EXIF Analyzer | Метаданные фото + GPS на карте | ExifRead |
-| 6 | 🎯 All-in-One | Комбинированный анализ всех типов | — |
-| 7 | 📦 Batch Mode | Пакетная обработка из файла | — |
-| 8 | 🔧 Proxy Manager | Ротация прокси для обхода блокировок | — |
+- Email OSINT — проверка аккаунтов и утечек
+- Username OSINT — поиск аккаунтов по нику (Sherlock/встроенные движки)
+- Phone OSINT — определение страны, оператора, типа номера
+- Domain OSINT — WHOIS, DNS, IP-геолокация
+- EXIF Analyzer — извлечение метаданных изображений (GPS)
+- All-in-One — комбинированный анализ по нескольким типам данных
+- Batch Mode — пакетная обработка целей из файла
+- Экспорт в JSON и интерактивный HTML-отчёт
 
 ### ✨ Ключевые фичи
 
-- 🔄 **Кэширование** — не проверяет повторно (24ч)
-- 🌍 **Прокси-ротация** — обход rate limit
-- 📊 **Экспорт** — JSON и красивый интерактивный HTML
-- 🗺️ **GPS карта** — встроенная Google Maps для EXIF
-- 🔍 **Поиск в отчётах** — фильтрация в HTML
-- 📱 **Termux-first** — оптимизировано под Android
-- 🤖 **AI-Assisted** — разработан с помощью искусственного интеллекта
+- Кэширование результатов (избегает повторных проверок)
+- Ротация прокси для обхода ограничений
+- Генерация подробных HTML-отчётов с поиском и картами
 
 ---
 
 ## 🚀 Установка
 
-### 1. Клонируй репозиторий
+1) Клонируй репозиторий:
 
-    git clone https://github.com/lixynhay/ShadowEye.git
-    cd ShadowEye
+```
+git clone https://github.com/lixynhay/ShadowEye.git
+cd ShadowEye
+```
 
-### 2. Установи зависимости
+2) Установи зависимости:
 
-    pip install -r requirements.txt
+```
+pip install -r requirements.txt
+```
 
-### 3. Установи пакет
+3) Установи пакет (локально):
 
-    pip install -e .
+```
+pip install -e .
+```
 
-### 4. Запуск
+4) Запуск:
 
-    shadoweye
-    # или
-    python -m osint_toolkit
+```
+shadoweye
+# или
+python -m osint_toolkit
+```
 
 ---
 
 ## 📖 Использование
 
-Запусти и выбери режим из меню:
+Запусти `shadoweye` или `python -m osint_toolkit` и выбери режим в интерактивном меню.
 
-    shadoweye
-
-Меню:
-
-    ────────────────────────── 🎯 ShadowEye v3.1 ─────────────────────────────
-    │ 1. 📧 Email OSINT (Holehe) — проверка регистрации email                  │
-    │ 2. 👤 Username OSINT (Maigret/Sherlock) — поиск по никнейму              │
-    │ 3. 📞 Phone OSINT — анализ телефона                                      │
-    │ 4. 🌐 Domain OSINT — WHOIS, DNS, IP                                      │
-    │ 5. 🖼️  Image EXIF — анализ метаданных                                    │
-    │ 6. 🎯 All-in-One — комбинированный анализ                                │
-    │ 7. 📦 Batch Mode — пакетная обработка                                    │
-    │ 8. 🔧 Настройка прокси                                                   │
-    │ 0. 🚪 Выход                                                              │
-    ──────────────────────────────────────────────────────────────────────────
-
-### Примеры
-
-**Email OSINT:**
-
-    Введите email: example@gmail.com
-    → Проверка в 120+ сервисах
-    → Результат: найден на GitHub, VK, Twitch...
-
-**Username OSINT:**
-
-    Введите username: lixynhay
-    → Maigret: 3000+ сайтов или Sherlock: 400+ сайтов
-    → Найдено: GitHub, VK, Kick, Roblox...
-
-**Domain OSINT:**
-
-    Введите домен: example.com
-    → WHOIS: регистратор, даты, контакты
-    → DNS: A, MX, TXT, NS записи
-    → IP: геолокация на карте
-
-### Batch Mode
-
-Создай файл `targets.txt`:
-
-    email:victim@gmail.com
-    username:hacker1337
-    phone:+79001234567
-    domain:target.com
-    image:~/photos/leak.jpg
-
-Запусти пакетную обработку — получи отчёт по всем целям.
+Примеры режимов: Email, Username, Phone, Domain, Image EXIF, All-in-One, Batch.
 
 ---
 
-## 📁 Структура проекта
+## 📁 Структура проекта (актуально)
 
-    ShadowEye/
-    ├── osint_toolkit/
-    │   ├── __init__.py
-    │   ├── cli.py              # Главный CLI интерфейс
-    │   ├── aggregator.py       # Агрегатор результатов
-    │   ├── ui.py               # UI компоненты (Rich)
-    │   ├── core/
-    │   │   ├── __init__.py
-    │   │   ├── email_checker.py      # Holehe интеграция
-    │   │   ├── username_checker.py   # Maigret + Sherlock
-    │   │   ├── phone_checker.py      # Phonenumbers
-    │   │   ├── domain_checker.py     # WHOIS + DNS
-    │   │   └── exif_analyzer.py      # EXIF метаданные
-    │   ├── utils/
-    │   │   ├── __init__.py
-    │   │   ├── cache.py              # Кэш результатов
-    │   │   ├── proxy_rotator.py      # Ротация прокси
-    │   │   └── html_report.py        # Генерация HTML отчётов
-    │   └── sherlock_builtin/         # Встроенный Sherlock
-    ├── requirements.txt
-    ├── setup.py
-    ├── README.md
-    ├── LICENSE
-    └── .gitignore
+```
+ShadowEye/
+├── osint_toolkit/
+│   ├── __init__.py
+│   ├── __main__.py
+│   ├── cli.py
+│   ├── aggregator.py
+│   ├── ui.py
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── domain_checker.py
+│   │   ├── email_checker.py
+│   │   ├── exif_analyzer.py
+│   │   ├── phone_checker.py
+│   │   └── username_checker.py
+│   ├── sherlock_builtin/
+│   │   ├── __init__.py
+│   │   ├── __main__.py
+│   │   ├── notify.py
+│   │   ├── result.py
+│   │   └── sherlock.py
+│   └── sherlock_project/
+│       ├── __init__.py
+│       ├── __main__.py
+│       ├── notify.py
+│       ├── result.py
+│       └── sherlock.py
+├── utils/
+│   ├── __init__.py
+│   ├── cache.py
+│   ├── export.py
+│   ├── html_report.py
+│   ├── proxy_rotator.py
+│   └── validators.py
+├── requirements.txt
+├── setup.py
+├── README.md
+├── LICENSE
+└── .gitignore
+```
 
 ---
 
 ## 🛠️ Требования
 
-- **Python** 3.10+
-- **Termux** (рекомендуется) или любой Linux
-- **16 GB RAM** (для полного поиска Maigret)
+- Python 3.10+
+- Работает на Linux, macOS и Windows (ограничения зависят от движков и наличия зависимостей)
 
-### Опционально
-
-- **Прокси** — для обхода rate limit (`~/.osint_proxies.txt`)
+Опционально: прокси для обхода rate-limits и дополнительная оперативная память при полносканировании.
 
 ---
 
 ## 📤 Экспорт отчётов
 
-### JSON
-Структурированные данные для дальнейшей обработки.
-
-### HTML
-Красивый интерактивный отчёт с:
-- 🔍 Поиском по таблицам
-- 🗺️ Встроенной GPS картой
-- 📊 Статистикой
-- 🎨 Адаптивным дизайном
+- JSON — структурированные данные для автоматизации и интеграций
+- HTML — интерактивный отчёт с поиском и картой для визуального анализа
 
 ---
 
 ## 🤝 Вклад
 
-Pull requests приветствуются! Для крупных изменений сначала открой issue.
+Pull requests и issues приветствуются. Для крупных изменений открой issue заранее.
 
 ---
 
 ## 📜 Лицензия
 
-MIT License — используй свободно.
+Этот проект распространяется под лицензией MIT. См. файл [LICENSE](LICENSE).
 
 ---
 
-## 🙏 Помощь
+**Сделано с ❤️ для OSINT сообщества**
 
-<div align="center">
-
-### 🤖 AI-Assisted Development
-
-**Этот проект был разработан с помощью искусственного интеллекта**
-
-Особая благодарность **[Qwen](https://github.com/QwenLM/Qwen)** (Alibaba Cloud) за помощь в:
-- 🏗️ Архитектуре проекта
-- 💻 Фикс багов и недоработок
-- 🐛 Дебаге и оптимизации
-- 📚 Документации
-- 🎨 UI/UX дизайне
-
-*ShadowEye — пример того, как человек и ИИ могут работать вместе для создания мощных инструментов*
-
-</div>
-
----
-
-<div align="center">
-
-**Сделано с ❤️ и 🤖 для OSINT сообщества**
-
-*ShadowEye — видит то, что скрыто в тени* 👁️🌑
-
-</div>
