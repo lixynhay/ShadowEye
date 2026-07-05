@@ -1,4 +1,3 @@
-"""Прокси-ротация для обхода rate limit."""
 import random
 from typing import List, Optional
 

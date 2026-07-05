@@ -1,4 +1,3 @@
-"""Генерация HTML-отчёта OSINT."""
 from datetime import datetime
 from html import escape
 

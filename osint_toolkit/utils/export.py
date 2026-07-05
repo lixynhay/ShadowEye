@@ -1,4 +1,3 @@
-"""Утилиты экспорта."""
 import csv
 import json
 import os

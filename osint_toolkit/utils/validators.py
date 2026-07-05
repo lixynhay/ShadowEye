@@ -1,4 +1,3 @@
-"""Валидация входных данных."""
 import re
 from typing import Optional
 
