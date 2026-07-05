@@ -21,7 +21,7 @@
 | Модуль | Описание | Технологии |
 | :--- | :--- | :--- |
 | 📧 **Email OSINT** | Проверка регистрации в 120+ сервисах | Holehe |
-| 👤 **Username OSINT** | Поиск аккаунтов по никнейму | Maigret + Sherlock (Built-in) |
+| 👤 **Username OSINT** | Поиск аккаунтов по никнейму | Sherlock (Built-in) |
 | 📞 **Phone OSINT** | Анализ номера (страна, оператор, тип) | Google libphonenumber |
 | 🌐 **Domain OSINT** | WHOIS, DNS записи, IP Geolocation | python-whois, dnspython |
 | 🖼️ **EXIF Analyzer** | Метаданные фото + GPS на карте | ExifRead |
