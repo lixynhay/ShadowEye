@@ -11,6 +11,7 @@
 [![Windows](https://img.shields.io/badge/platform-Windows-green.svg)](https://www.microsoft.com/)
 [![Termux](https://img.shields.io/badge/platform-Termux-green.svg)](https://termux.com/)
 [![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.kernel.org/)
+[![PyPI version](https://badge.fury.io/py/shadoweye.svg)](https://badge.fury.io/py/shadoweye)
 </div>
 
 ---
