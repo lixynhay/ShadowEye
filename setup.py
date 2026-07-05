@@ -7,11 +7,7 @@ setup(
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type="text/markdown",
     author="lixynhay",
-<<<<<<< HEAD
     author_email="lixynhay@gmail.com",
-=======
-    author_email="lixynay@gmail.com",
->>>>>>> 1def7b1a5fd4a97e38f38a9fb201d07e3310288e
     url="https://github.com/lixynhay/ShadowEye",
     packages=find_packages(),
     include_package_data=True,
