@@ -26,6 +26,8 @@ setup(
         "beautifulsoup4>=4.12.0",
         "lxml>=5.0.0",
         "requests-futures>=1.0.0",
+        "stem>=1.8.0",
+        "pandas>=2.0.0",
     ],
     entry_points={
         "console_scripts": [
@@ -42,6 +44,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Topic :: Security",
+        "Operating System :: Microsoft :: Windows",
         "Operating System :: POSIX :: Linux",
     ],
     keywords="osint security termux email username phone domain exif",

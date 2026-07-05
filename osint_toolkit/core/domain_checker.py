@@ -29,8 +29,9 @@ class DomainChecker:
     
     def check(self, domain: str) -> Dict[str, Any]:
         """Проверить домен."""
+        normalized_domain = domain.strip().lower() if isinstance(domain, str) else ""
         result = {
-            "domain": domain,
+            "domain": normalized_domain,
             "whois": None,
             "dns": {},
             "ip": None,
@@ -38,15 +39,15 @@ class DomainChecker:
         }
         
         # WHOIS
-        if self._whois_available:
-            result["whois"] = self._get_whois(domain)
+        if self._whois_available and normalized_domain:
+            result["whois"] = self._get_whois(normalized_domain)
         
         # DNS
-        if self._dns_available:
-            result["dns"] = self._get_dns(domain)
+        if self._dns_available and normalized_domain:
+            result["dns"] = self._get_dns(normalized_domain)
         
         # IP и геолокация
-        ip = self._get_ip(domain)
+        ip = self._get_ip(normalized_domain) if normalized_domain else None
         if ip:
             result["ip"] = ip
             result["ip_geo"] = self._get_ip_geo(ip)
@@ -72,6 +73,8 @@ class DomainChecker:
                 "org": w.org,
                 "emails": w.emails if isinstance(w.emails, list) else [w.emails] if w.emails else []
             }
+        except (TimeoutError, ConnectionError, OSError) as e:
+            return {"error": f"Ошибка сети: {e}"}
         except Exception as e:
             return {"error": str(e)}
     
@@ -114,10 +117,12 @@ class DomainChecker:
             try:
                 answers = dns.resolver.resolve(domain, 'NS')
                 records['NS'] = [str(rdata.target) for rdata in answers]
-            except:
+            except Exception:
                 records['NS'] = []
             
             return records
+        except (TimeoutError, ConnectionError, OSError) as e:
+            return {"error": f"Ошибка сети: {e}"}
         except Exception as e:
             return {"error": str(e)}
     
@@ -126,7 +131,7 @@ class DomainChecker:
         try:
             ip = socket.gethostbyname(domain)
             return ip
-        except:
+        except (socket.gaierror, TimeoutError, OSError):
             return None
     
     def _get_ip_geo(self, ip: str) -> Dict[str, Any]:
@@ -134,7 +139,7 @@ class DomainChecker:
         try:
             import requests
             
-            response = requests.get(f"http://ip-api.com/json/{ip}", timeout=10)
+            response = requests.get(f"https://ip-api.com/json/{ip}", timeout=10)
             data = response.json()
             
             if data.get('status') == 'success':
@@ -150,7 +155,7 @@ class DomainChecker:
                     "timezone": data.get('timezone'),
                     "maps_url": f"https://www.google.com/maps?q={data.get('lat')},{data.get('lon')}"
                 }
-        except:
+        except (requests.RequestException, TimeoutError, OSError):
             pass
         
         return None

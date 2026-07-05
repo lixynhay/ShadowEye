@@ -1,5 +1,6 @@
 """Генерация HTML-отчёта OSINT."""
 from datetime import datetime
+from html import escape
 
 
 def generate_html_report(data: dict) -> str:
@@ -8,22 +9,25 @@ def generate_html_report(data: dict) -> str:
 
     css = """
     <style>
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: #0d1117; color: #c9d1d9; margin: 0; padding: 20px; }
+        :root { color-scheme: dark; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: linear-gradient(135deg, #0d1117, #161b22); color: #c9d1d9; margin: 0; padding: 24px; }
         h1 { color: #58a6ff; border-bottom: 2px solid #30363d; padding-bottom: 10px; }
         h2 { color: #79c0ff; margin-top: 30px; }
+        h3 { color: #8b949e; }
         table { width: 100%; border-collapse: collapse; margin: 15px 0; background: #161b22; border: 1px solid #30363d; border-radius: 8px; overflow: hidden; }
         th { background: #21262d; color: #58a6ff; padding: 12px; text-align: left; font-weight: 600; }
-        td { padding: 10px 12px; border-top: 1px solid #30363d; }
+        td { padding: 10px 12px; border-top: 1px solid #30363d; word-break: break-word; }
         tr:hover { background: #1f242c; }
         .found { color: #3fb950; font-weight: bold; }
         .notfound { color: #f85149; }
         .error { color: #d29922; }
         .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; background: #21262d; margin-right: 4px; }
         .summary-box { display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0; }
-        .summary-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 20px; min-width: 180px; text-align: center; }
+        .summary-card { background: rgba(22, 27, 34, 0.95); border: 1px solid #30363d; border-radius: 10px; padding: 20px; min-width: 180px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
         .summary-card .value { font-size: 28px; font-weight: bold; color: #58a6ff; }
         .summary-card .label { font-size: 14px; color: #8b949e; margin-top: 5px; }
         .gps-box { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 15px; margin: 15px 0; }
+        .muted { color: #8b949e; }
         a { color: #58a6ff; text-decoration: none; }
         a:hover { text-decoration: underline; }
         .footer { margin-top: 40px; text-align: center; color: #484f58; font-size: 12px; border-top: 1px solid #30363d; padding-top: 20px; }
@@ -56,9 +60,9 @@ def generate_html_report(data: dict) -> str:
                 status = '<span class="notfound">✗ Не найден</span>'
             rows += f"""
             <tr>
-                <td>{r.get("service", "?")}</td>
+                <td>{escape(str(r.get('service', '?')))}</td>
                 <td>{status}</td>
-                <td>{r.get("details", "")}</td>
+                <td>{escape(str(r.get('details', '')))}</td>
             </tr>
             """
         email_html = f"""
@@ -76,16 +80,16 @@ def generate_html_report(data: dict) -> str:
             if r.get("exists"):
                 status = '<span class="found">✓ Найден</span>'
                 url = r.get("url", "")
-                url_html = f'<a href="{url}" target="_blank">{url}</a>' if url else ""
+                url_html = f'<a href="{escape(str(url), quote=True)}" target="_blank">{escape(str(url))}</a>' if url else ""
             else:
                 status = '<span class="notfound">✗ Не найден</span>'
                 url_html = ""
-            tags = " ".join([f'<span class="badge">{tag}</span>' for tag in r.get("tags", [])])
+            tags = " ".join([f'<span class="badge">{escape(str(tag))}</span>' for tag in r.get("tags", [])])
             rows += f"""
             <tr>
-                <td>{r.get("service", "?")}</td>
+                <td>{escape(str(r.get('service', '?')))}</td>
                 <td>{status}</td>
-                <td>{url_html}</td>
+                <td>{escape(str(r.get('details', '')))}{url_html}</td>
                 <td>{tags}</td>
             </tr>
             """
@@ -116,7 +120,7 @@ def generate_html_report(data: dict) -> str:
             for tag_name, value in tags.items():
                 short_name = tag_name.split(" ", 1)[-1] if " " in tag_name else tag_name
                 cat_display = category if first else ""
-                meta_rows += f"<tr><td>{cat_display}</td><td>{short_name}</td><td>{value}</td></tr>"
+                meta_rows += f"<tr><td>{escape(str(cat_display))}</td><td>{escape(str(short_name))}</td><td>{escape(str(value))}</td></tr>"
                 first = False
         exif_html = f"""
         <h2>🖼️ EXIF: {exif.get("file", "Unknown")}</h2>
@@ -150,19 +154,19 @@ def generate_html_report(data: dict) -> str:
         if whois and not whois.get("error"):
             for k, v in whois.items():
                 if v:
-                    whois_rows += f"<tr><td>{k}</td><td>{v}</td></tr>"
+                    whois_rows += f"<tr><td>{escape(str(k))}</td><td>{escape(str(v))}</td></tr>"
         dns_rows = ""
         dns = domain.get("dns", {})
         if dns and not dns.get("error"):
             for record_type, values in dns.items():
                 if values:
-                    dns_rows += f"<tr><td>{record_type}</td><td>{', '.join(values)}</td></tr>"
+                    dns_rows += f"<tr><td>{escape(str(record_type))}</td><td>{escape(', '.join(map(str, values)))}</td></tr>"
         ip_geo = domain.get("ip_geo", {})
         geo_rows = ""
         if ip_geo:
             for k, v in ip_geo.items():
                 if v and k != "maps_url":
-                    geo_rows += f"<tr><td>{k}</td><td>{v}</td></tr>"
+                    geo_rows += f"<tr><td>{escape(str(k))}</td><td>{escape(str(v))}</td></tr>"
         domain_html = f"""
         <h2>🌐 Domain: {domain.get("domain", "Unknown")}</h2>
         <h3>WHOIS</h3>
@@ -183,7 +187,7 @@ def generate_html_report(data: dict) -> str:
 </head>
 <body>
     <h1>🎯 ShadowEye OSINT Report</h1>
-    <p>Generated: {timestamp}</p>
+    <p class="muted">Generated: {escape(str(timestamp))}</p>
     {summary_html}
     {email_html}
     {username_html}

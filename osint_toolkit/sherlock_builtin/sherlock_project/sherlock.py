@@ -914,18 +914,8 @@ def main():
                 exists.append(str(results[site]["status"].status))
                 http_status.append(results[site]["http_status"])
 
-            # DataFrame = pd.DataFrame  # Disabled pandas(
-                {
-                    "username": usernames,
-                    "name": names,
-                    "url_main": [f'=HYPERLINK(\"{u}\")' for u in url_main],
-                    "url_user": [f'=HYPERLINK(\"{u}\")' for u in url_user],
-                    "exists": exists,
-                    "http_status": http_status,
-                    "response_time_s": response_time_s,
-                }
-            )
-            DataFrame.to_excel(f"{username}.xlsx", sheet_name="sheet1", index=False)
+            # DataFrame = pd.DataFrame  # Disabled pandas
+            # DataFrame.to_excel(f"{username}.xlsx", sheet_name="sheet1", index=False)
 
         print()
     query_notify.finish()

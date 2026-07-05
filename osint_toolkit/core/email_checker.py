@@ -1,10 +1,21 @@
-"""Email OSINT через Holehe CLI с правильным парсингом."""
 import asyncio
+import os
+import sys
+import subprocess
 import re
+from typing import List, Dict, Any
 from typing import List, Dict, Any
 from ..ui import console, create_progress
 
-# Мусорные строки которые не являются сервисами
+SERVICE_PATTERNS = [
+    r"\[\+\]\s*(.+)",
+    r"\[-\]\s*(.+)",
+    r"\[x\]\s*(.+)",
+]
+
+if sys.platform == 'win32':
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 SKIP_PATTERNS = [
     "Email used",
     "websites checked",
@@ -17,7 +28,7 @@ SKIP_PATTERNS = [
 ]
 
 class EmailChecker:
-    def __init__(self, timeout: int = 20, proxy: str = None):
+    def __init__(self, timeout: int = 90, proxy: str = None):
         self.timeout = timeout
         self.proxy = proxy
         self._holehe_available = False
@@ -40,93 +51,118 @@ class EmailChecker:
         line = line.strip()
         if not line:
             return False
-        
-        # Должна начинаться с [+], [-] или [x]
-        if not (line.startswith('[+]') or line.startswith('[-]') or line.startswith('[x]')):
+
+        if any(line.startswith(prefix) for prefix in ['[+]', '[-]', '[x]']):
+            for pattern in SKIP_PATTERNS:
+                if pattern in line:
+                    return False
+            return True
+
+        if re.search(r"\b(?:site|service|account|username|email)\b", line, re.IGNORECASE):
             return False
-        
-        # Фильтруем мусорные строки
-        for pattern in SKIP_PATTERNS:
-            if pattern in line:
-                return False
-        
-        return True
+
+        return False
+
+    def _parse_line(self, line: str, show_all: bool) -> Dict[str, Any] | None:
+        """Попытаться распознать строку вывода Holehe."""
+        cleaned = line.strip()
+        if not cleaned:
+            return None
+
+        for pattern in SERVICE_PATTERNS:
+            match = re.match(pattern, cleaned)
+            if match:
+                service = match.group(1).strip()
+                if not service:
+                    return None
+                for skip in SKIP_PATTERNS:
+                    if skip in cleaned:
+                        return None
+                if cleaned.startswith('[+]'):
+                    return {
+                        "service": service,
+                        "exists": True,
+                        "details": "✓ Email найден",
+                        "error": False,
+                    }
+                if cleaned.startswith('[-]'):
+                    if show_all:
+                        return {
+                            "service": service,
+                            "exists": False,
+                            "details": "Не зарегистрирован",
+                            "error": False,
+                        }
+                    return None
+                if cleaned.startswith('[x]'):
+                    if show_all:
+                        return {
+                            "service": service,
+                            "exists": False,
+                            "details": "⚠ Rate limit",
+                            "error": True,
+                        }
+                    return None
+
+        return None
     
     async def check(self, email: str, show_all: bool = False) -> List[Dict[str, Any]]:
+        """Проверка email через Holehe."""
         if not self._holehe_available:
-            return []
-        
+            return [{"service": "holehe", "exists": False, "details": "Holehe не установлен", "error": True}]
+
         results = []
-        
+
         try:
-            cmd = ["holehe", email]
-            
-            if self.proxy:
-                cmd.extend(["--proxy", self.proxy])
-            
-            with create_progress() as progress:
-                task = progress.add_task(f"[cyan]Holehe проверяет {email}...", total=100)
-                
-                proc = await asyncio.create_subprocess_exec(
-                    *cmd,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE
-                )
-                
-                stdout, stderr = await proc.communicate()
-                progress.update(task, completed=100)
-                
-                stdout_text = stdout.decode('utf-8', errors='ignore') if stdout else ""
-                
-                for line in stdout_text.split('\n'):
-                    if not self._is_valid_line(line):
-                        continue
-                    
-                    line = line.strip()
-                    
-                    if line.startswith('[+]'):
-                        site = line.replace('[+]', '').strip()
-                        results.append({
-                            "service": site,
-                            "exists": True,
-                            "details": "✓ Email найден",
-                            "error": False,
-                        })
-                    elif line.startswith('[-]'):
-                        site = line.replace('[-]', '').strip()
-                        if show_all:
-                            results.append({
-                                "service": site,
-                                "exists": False,
-                                "details": "Не зарегистрирован",
-                                "error": False,
-                            })
-                    elif line.startswith('[x]'):
-                        site = line.replace('[x]', '').strip()
-                        if show_all:
-                            results.append({
-                                "service": site,
-                                "exists": False,
-                                "details": "⚠ Rate limit",
-                                "error": True,
-                            })
-                
-                # Статистика (всегда показываем)
-                found = sum(1 for r in results if r.get('exists'))
-                not_found = sum(1 for r in results if not r.get('exists') and not r.get('error'))
-                rate_limited = sum(1 for r in results if r.get('error'))
-                
-                console.print(f"[cyan]ℹ Всего проверено: {found + not_found + rate_limited}[/cyan]")
-                console.print(f"[green]✓ Найдено: {found}[/green]")
-                console.print(f"[red]✗ Не найдено: {not_found}[/red]")
-                console.print(f"[yellow]⚠ Rate limit: {rate_limited}[/yellow]")
-                console.print(f"[cyan]ℹ Совет: используй прокси чтобы уменьшить rate limit[/cyan]")
-        
+            import holehe.core as holehe_core
+
+            from io import StringIO
+            buffer = StringIO()
+            old_argv = sys.argv[:]
+            old_stdout = sys.stdout
+            old_stderr = sys.stderr
+            try:
+                sys.argv = ['holehe', email]
+                sys.stdout = buffer
+                sys.stderr = buffer
+                import trio
+                trio.run(holehe_core.maincore)
+            finally:
+                sys.argv = old_argv
+                sys.stdout = old_stdout
+                sys.stderr = old_stderr
+
+            combined_output = buffer.getvalue()
+
+            if not combined_output.strip():
+                console.print("[yellow]⚠ Holehe завершился без данных[/yellow]")
+                return results
+
+            for line in combined_output.split('\n'):
+                line = line.strip()
+                parsed = self._parse_line(line, show_all)
+                if parsed:
+                    results.append(parsed)
+
+            found = sum(1 for r in results if r.get('exists'))
+            not_found = sum(1 for r in results if not r.get('exists') and not r.get('error'))
+            rate_limited = sum(1 for r in results if r.get('error'))
+
+            console.print(f"[cyan]ℹ Всего проверено: {found + not_found + rate_limited}[/cyan]")
+            console.print(f"[green]✓ Найдено: {found}[/green]")
+            console.print(f"[red]✗ Не найдено: {not_found}[/red]")
+            console.print(f"[yellow]⚠ Rate limit: {rate_limited}[/yellow]")
+
+        except FileNotFoundError:
+            console.print("[bold red]✗ Holehe не найден. Установите: pip install holehe[/bold red]")
+            return [{"service": "holehe", "exists": False, "details": "Holehe не найден", "error": True}]
+        except (TimeoutError, ConnectionError, OSError) as e:
+            console.print(f"[yellow]⚠ Ошибка сети Holehe: {e}[/yellow]")
+            return [{"service": "holehe", "exists": False, "details": f"Ошибка сети: {e}", "error": True}]
         except Exception as e:
-            console.print(f"[bold red]✗ Ошибка запуска Holehe: {e}[/bold red]")
-            import traceback
-            traceback.print_exc()
-        
+            console.print(f"[yellow]⚠ Holehe завершился без данных: {e}[/yellow]")
+            return [{"service": "holehe", "exists": False, "details": str(e), "error": True}]
+
         return results
     
     def run(self, email: str, show_all: bool = False) -> List[Dict[str, Any]]:

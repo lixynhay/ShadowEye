@@ -1,4 +1,6 @@
 """UI компоненты с использованием Rich library."""
+import os
+import sys
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -6,33 +8,55 @@ from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn
 from rich.prompt import Prompt, IntPrompt
 from rich import box
 
-console = Console()
+console = Console(highlight=False, soft_wrap=True)
+
+
+def get_terminal_theme() -> str:
+    """Return a simple theme hint for better readability on different platforms."""
+    if os.environ.get("TERMUX_VERSION"):
+        return "termux"
+    if sys.platform.startswith("win"):
+        return "windows"
+    return "unix"
+
+
+def get_banner_title() -> str:
+    theme = get_terminal_theme()
+    if theme == "termux":
+        return "ShadowEye [bold cyan]Termux[/bold cyan]"
+    if theme == "windows":
+        return "ShadowEye [bold cyan]Windows[/bold cyan]"
+    return "ShadowEye [bold cyan]Linux[/bold cyan]"
 
 def print_banner():
-    banner = """
+    banner = f"""
 [bold cyan]
- ██████╗ ███████╗███╗ ██╗ ██████╗ ████████╗███████╗██╗████████╗
- ██╔═══██╗██╔════╝████╗ ██║██╔═══██╗╚══██╔══╝██╔════╝██║╚══██╔══╝
- ██║ ██║███████╗██╔██╗ ██║██║ ██║ ██║ █████╗ ██║ ██║
- ██║ ██║╚════██║██║╚██╗██║██║ ██║ ██║ ██╔══╝ ██║ ██║
- ╚██████╔╝███████║██║ ╚████║╚██████╔╝ ██║ ██║ ██║ ██║
- ╚═════╝ ╚══════╝╚═╝ ╚═══╝ ╚═════╝ ╚═╝ ╚═╝ ╚═╝ ╚═╝
+  ███████╗██╗   ██╗███████╗████████╗███████╗███╗   ███╗
+  ██╔════╝██║   ██║██╔════╝╚══██╔══╝██╔════╝████╗ ████║
+  ███████╗██║   ██║███████╗   ██║   █████╗  ██╔██████║
+  ╚════██║██║   ██║╚════██║   ██║   ██╔══╝  ██║╚██╔╝██║
+  ███████║╚██████╔╝███████║   ██║   ███████╗██║ ╚═╝ ██║
+  ╚══════╝ ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
 [/bold cyan]
-[bold yellow] OSINT Toolkit Pro v3.1 — Multi-Tool Framework[/bold yellow]
-[bold magenta] by Dima | Email + Username + EXIF Analysis[/bold magenta]
+[bold yellow]        ShadowEye v3.1 — Multi-Tool OSINT Framework[/bold yellow]
+[bold magenta]        by lixynhay[/bold magenta]
+[dim]        Platform: {get_terminal_theme().title()}[/dim]
 """
     console.print(banner)
 
 def print_menu():
     menu_items = [
         "[bold green]1.[/bold green] 📧 Email OSINT (Holehe) — проверка регистрации email",
-        "[bold green]2.[/bold green] 👤 Username OSINT (Maigret) — поиск по никнейму",
-        "[bold green]3.[/bold green] 🖼️ Image EXIF — анализ метаданных изображений",
-        "[bold green]4.[/bold green] 🎯 All-in-One — комбинированный анализ",
-        "[bold green]5.[/bold green] 📦 Batch Mode — пакетная обработка",
-        "[bold red]0.[/bold red] 🚪 Выход",
+        "[bold green]2.[/bold green] 👤 Username OSINT (Maigret/Sherlock) — поиск по никнейму",
+        "[bold green]3.[/bold green] 📞 Phone OSINT — анализ телефона",
+        "[bold green]4.[/bold green] 🌐 Domain OSINT — WHOIS, DNS, IP",
+        "[bold green]5.[/bold green] 🖼️ Image EXIF — анализ метаданных",
+        "[bold green]6.[/bold green] 🎯 All-in-One — комбинированный анализ",
+        "[bold green]7.[/bold green] 📦 Batch Mode — пакетная обработка",
+        "[bold green]8.[/bold green] 🔧 Настройка прокси",
+        "[bold red]0.[/bold red]  🚪 Выход",
     ]
-    console.print(Panel("\n".join(menu_items), title="[bold cyan]🎯 Выберите режим работы[/bold cyan]", border_style="cyan", box=box.ROUNDED))
+    console.print(Panel("\n".join(menu_items), title=f"[bold cyan]🎯 {get_banner_title()}[/bold cyan]", border_style="cyan", box=box.ROUNDED))
 
 def get_menu_choice() -> int:
     try:
@@ -42,9 +66,9 @@ def get_menu_choice() -> int:
 
 def create_results_table(title: str, results: list) -> Table:
     table = Table(title=f"[bold]{title}[/bold]", box=box.ROUNDED, show_header=True, header_style="bold cyan")
-    table.add_column("Сервис", style="cyan", width=25)
-    table.add_column("Статус", style="magenta", width=12)
-    table.add_column("Детали", style="white")
+    table.add_column("Сервис", style="cyan", width=24)
+    table.add_column("Статус", style="magenta", width=14)
+    table.add_column("Детали", style="white", overflow="fold")
     for r in results:
         status = "[bold green]✓ Найден[/bold green]" if r.get("exists") else "[red]✗ Не найден[/red]"
         if r.get("error"):
@@ -64,7 +88,6 @@ def create_exif_table(exif_data: dict) -> Table:
     table.add_column("Категория", style="cyan", width=20)
     table.add_column("Тег", style="white", width=30)
     table.add_column("Значение", style="green")
-
     for category, tags in exif_data.items():
         first = True
         for tag_name, value in tags.items():
@@ -72,11 +95,17 @@ def create_exif_table(exif_data: dict) -> Table:
             cat_display = category if first else ""
             table.add_row(cat_display, short_name, str(value))
             first = False
-
     return table
 
 def create_progress():
-    return Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), BarColumn(), TextColumn("[progress.percentage]{task.percentage:>3.0f}%"), console=console)
+    return Progress(
+        SpinnerColumn(style="green"),
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(bar_width=None),
+        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        console=console,
+        transient=False,
+    )
 
 def print_success(message: str):
     console.print(f"[bold green]✓[/bold green] {message}")

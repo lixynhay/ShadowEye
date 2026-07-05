@@ -27,9 +27,13 @@ class PhoneChecker:
         try:
             import phonenumbers
             from phonenumbers import carrier, geocoder, timezone
+
+            normalized_phone = phone.strip()
+            if not normalized_phone:
+                return {"error": "Пустой номер телефона", "phone": phone}
             
             # Парсим номер
-            parsed = phonenumbers.parse(phone, None)
+            parsed = phonenumbers.parse(normalized_phone, None)
             
             # Проверяем валидность
             if not phonenumbers.is_valid_number(parsed):
@@ -39,7 +43,7 @@ class PhoneChecker:
                 }
             
             result = {
-                "phone": phone,
+                "phone": normalized_phone,
                 "international": phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.INTERNATIONAL),
                 "national": phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.NATIONAL),
                 "country_code": parsed.country_code,
@@ -55,6 +59,8 @@ class PhoneChecker:
         
         except phonenumbers.NumberParseException as e:
             return {"error": f"Ошибка парсинга: {e}", "phone": phone}
+        except (TimeoutError, ConnectionError, OSError) as e:
+            return {"error": f"Ошибка сети: {e}", "phone": phone}
         except Exception as e:
             return {"error": str(e), "phone": phone}
     
