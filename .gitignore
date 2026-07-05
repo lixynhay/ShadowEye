@@ -21,3 +21,4 @@ Thumbs.db
 .osint_proxies.txt
 osint_report.*
 maigret_*/
+*.ps1

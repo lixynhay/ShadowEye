@@ -37,7 +37,7 @@ def print_banner():
   ███████║╚██████╔╝███████║   ██║   ███████╗██║ ╚═╝ ██║
   ╚══════╝ ╚═════╝ ╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝
 [/bold cyan]
-[bold yellow]        ShadowEye v3.1 — Multi-Tool OSINT Framework[/bold yellow]
+[bold yellow]        ShadowEye v3.1.3 — Multi-Tool OSINT Framework[/bold yellow]
 [bold magenta]        by lixynhay[/bold magenta]
 [dim]        Platform: {get_terminal_theme().title()}[/dim]
 """

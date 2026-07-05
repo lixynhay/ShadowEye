@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="shadoweye",
-    version="3.1.1",
+    version="3.1.3",
     description="Multi-Tool OSINT Framework for Termux and Windows",
     long_description=open('README.md', encoding='utf-8').read(),
     long_description_content_type="text/markdown",
