@@ -2,7 +2,7 @@
 
 # 👁️ ShadowEye
 
-### 🎯 Multi-Tool OSINT Framework for Termux & Windows
+### 🎯 Multi-Tool OSINT Framework for Linux & Windows
 
 **Мощный консольный инструмент для разведки: Email, Username, Phone, Domain, EXIF.**  
 Кроссплатформенность, кэширование, прокси-ротация и красивые отчеты.
