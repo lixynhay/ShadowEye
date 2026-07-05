@@ -8,7 +8,8 @@
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-
+[![Windows](https://img.shields.io/badge/platform-Windows-green.svg)](https://www.microsoft.com/)
+[![Termux](https://img.shields.io/badge/platform-Termux-green.svg)](https://termux.com/)
 </div>
 
 ---
