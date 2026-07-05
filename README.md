@@ -10,6 +10,7 @@
 [![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 [![Windows](https://img.shields.io/badge/platform-Windows-green.svg)](https://www.microsoft.com/)
 [![Termux](https://img.shields.io/badge/platform-Termux-green.svg)](https://termux.com/)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.kernel.org/)
 </div>
 
 ---
