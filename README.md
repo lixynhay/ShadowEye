@@ -2,155 +2,157 @@
 
 # 👁️ ShadowEye
 
-### 🎯 Модульный OSINT-инструментарий
+### 🎯 Multi-Tool OSINT Framework for Termux & Windows
 
-**Набор утилит для разведки: email, username, phone, domain, EXIF и агрегирование результатов.**
+**Мощный консольный инструмент для разведки: Email, Username, Phone, Domain, EXIF.**  
+Кроссплатформенность, кэширование, прокси-ротация и красивые отчеты.
 
+[![PyPI version](https://badge.fury.io/py/shadoweye.svg)](https://pypi.org/project/shadoweye/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/)
-[![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
-[![Windows](https://img.shields.io/badge/platform-Windows-green.svg)](https://www.microsoft.com/)
-[![Termux](https://img.shields.io/badge/platform-Termux-green.svg)](https://termux.com/)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://www.kernel.org/)
-[![PyPI version](https://badge.fury.io/py/shadoweye.svg)](https://badge.fury.io/py/shadoweye)
+[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20Termux-green.svg)](https://github.com/lixynhay/ShadowEye)
+
 </div>
 
 ---
 
-## 🌟 Возможности
+##  Возможности
 
-- Email OSINT — проверка аккаунтов и утечек
-- Username OSINT — поиск аккаунтов по нику (Sherlock/встроенные движки)
-- Phone OSINT — определение страны, оператора, типа номера
-- Domain OSINT — WHOIS, DNS, IP-геолокация
-- EXIF Analyzer — извлечение метаданных изображений (GPS)
-- All-in-One — комбинированный анализ по нескольким типам данных
-- Batch Mode — пакетная обработка целей из файла
-- Экспорт в JSON и интерактивный HTML-отчёт
+| Модуль | Описание | Технологии |
+| :--- | :--- | :--- |
+| 📧 **Email OSINT** | Проверка регистрации в 120+ сервисах | Holehe |
+| 👤 **Username OSINT** | Поиск аккаунтов по никнейму | Maigret + Sherlock (Built-in) |
+| 📞 **Phone OSINT** | Анализ номера (страна, оператор, тип) | Google libphonenumber |
+| 🌐 **Domain OSINT** | WHOIS, DNS записи, IP Geolocation | python-whois, dnspython |
+| 🖼️ **EXIF Analyzer** | Метаданные фото + GPS на карте | ExifRead |
+| 🎯 **All-in-One** | Комплексный анализ всех типов данных | — |
+| 📦 **Batch Mode** | Пакетная обработка целей из файла | — |
+| 🔧 **Proxy Manager** | Ротация прокси для обхода блокировок | HTTP/SOCKS5 support |
 
-### ✨ Ключевые фичи
-
-- Кэширование результатов (избегает повторных проверок)
-- Ротация прокси для обхода ограничений
-- Генерация подробных HTML-отчётов с поиском и картами
+### ✨ Ключевые преимущества
+- **🔄 Умное кэширование**: Результаты сохраняются на 24ч, чтобы не тратить время на повторные проверки.
+- **🌍 Прокси-ротация**: Автоматическая смена IP для обхода Rate Limit.
+- **📊 Интерактивные отчеты**: Экспорт в JSON и красивый HTML с поиском и картами.
+- ** Кроссплатформенность**: Стабильная работа на Windows 10/11, Linux и Android (Termux).
+- **⚡ Валидация данных**: Встроенная проверка формата email, телефонов и доменов перед запросом.
 
 ---
 
 ## 🚀 Установка
 
-1) Клонируй репозиторий:
+### Вариант 1: Через PyPI (Рекомендуется)
+Самый быстрый способ установки. Открой терминал и выполни:
 
+```bash
+pip install shadoweye
 ```
+
+### Вариант 2: Из исходников (GitHub)
+Если хочешь получить самую свежую версию или внести изменения:
+
+```bash
 git clone https://github.com/lixynhay/ShadowEye.git
 cd ShadowEye
-```
-
-2) Установи зависимости:
-
-```
 pip install -r requirements.txt
-```
-
-3) Установи пакет (локально):
-
-```
 pip install -e .
 ```
 
-4) Запуск:
-
-```
-shadoweye
-# или
-python -m osint_toolkit
-```
-
 ---
-
-## 📦 Установка из PyPI
-```
-pip install shadoweye
-shadoweye
-```
 
 ## 📖 Использование
 
-Запусти `shadoweye` или `python -m osint_toolkit` и выбери режим в интерактивном меню.
+После установки просто запусти команду в терминале:
 
-Примеры режимов: Email, Username, Phone, Domain, Image EXIF, All-in-One, Batch.
+```bash
+shadoweye
+```
+
+Или используй модульный запуск:
+```bash
+python -m osint_toolkit
+```
+
+
+### Примеры работы
+
+**📧 Email Check:**
+> Введи `example@gmail.com` → Получи список сервисов, где этот email зарегистрирован.
+
+** Username Search:**
+> Введи `nickname` → Выбери Sherlock (быстро) или Maigret (глубоко) → Найди профили в соцсетях.
+
+**🌐 Domain Analysis:**
+> Введи `target.com` → Узнай регистратора, DNS-серверы и физическое расположение сервера.
 
 ---
 
-## 📁 Структура проекта (актуально)
+##  Структура проекта
 
-```
+Проект имеет четкую модульную архитектуру:
+
+```text
 ShadowEye/
-├── osint_toolkit/
-│   ├── __init__.py
-│   ├── __main__.py
-│   ├── cli.py
-│   ├── aggregator.py
-│   ├── ui.py
-│   ├── core/
-│   │   ├── __init__.py
-│   │   ├── domain_checker.py
+├── osint_toolkit/          # Основной пакет
+│   ├── cli.py              # Главный интерфейс и меню
+│   ├── aggregator.py       # Сбор и экспорт результатов
+│   ├── ui.py               # UI компоненты (Rich library)
+│   ├── core/               # Ядро инструментов
 │   │   ├── email_checker.py
-│   │   ├── exif_analyzer.py
+│   │   ├── username_checker.py
 │   │   ├── phone_checker.py
-│   │   └── username_checker.py
-│   ├── sherlock_builtin/
-│   │   ├── __init__.py
-│   │   ├── __main__.py
-│   │   ├── notify.py
-│   │   ├── result.py
-│   │   └── sherlock.py
-│   └── sherlock_project/
-│       ├── __init__.py
-│       ├── __main__.py
-│       ├── notify.py
-│       ├── result.py
-│       └── sherlock.py
-├── utils/
-│   ├── __init__.py
-│   ├── cache.py
-│   ├── export.py
-│   ├── html_report.py
-│   ├── proxy_rotator.py
-│   └── validators.py
-├── requirements.txt
-├── setup.py
-├── README.md
-├── LICENSE
-└── .gitignore
+│   │   ├── domain_checker.py
+│   │   └── exif_analyzer.py
+│   ├── utils/              # Вспомогательные утилиты
+│   │   ├── cache.py        # Система кэширования
+│   │   ├── validators.py   # Валидация входных данных
+│   │   ├── proxy_rotator.py# Управление прокси
+│   │   ── html_report.py  # Генератор HTML-отчетов
+│   └── sherlock_builtin/   # Встроенная версия Sherlock
+├── setup.py                # Конфигурация пакета
+├── requirements.txt        # Зависимости
+└── README.md
 ```
 
 ---
 
 ## 🛠️ Требования
 
-- Python 3.10+
-- Работает на Linux, macOS и Windows (ограничения зависят от движков и наличия зависимостей)
-
-Опционально: прокси для обхода rate-limits и дополнительная оперативная память при полносканировании.
+- **Python**: 3.10 или выше
+- **ОС**: Windows, Linux, macOS, Android (Termux)
 
 ---
 
-## 📤 Экспорт отчётов
+##  Экспорт результатов
 
-- JSON — структурированные данные для автоматизации и интеграций
-- HTML — интерактивный отчёт с поиском и картой для визуального анализа
+ShadowEye позволяет сохранять данные для дальнейшего анализа:
 
----
-
-## 🤝 Вклад
-
-Pull requests и issues приветствуются. Для крупных изменений открой issue заранее.
+- **JSON**: Машиночитаемый формат для интеграции с другими скриптами.
+- **HTML**: Красивый веб-отчет с таблицами, статусами и встроенными картами Google Maps для GPS-координат.
 
 ---
 
-## 📜 Лицензия
+## ⚠️ Дисклеймер
 
-Этот проект распространяется под лицензией MIT. См. файл [LICENSE](LICENSE).
+Этот инструмент создан **исключительно для образовательных целей** и легального OSINT-анализа. 
+Автор не несет ответственности за неправомерное использование программного обеспечения. 
+Не используйте ShadowEye для преследования, сталкинга или нарушения законов вашей юрисдикции.
 
 ---
 
-**Сделано с ❤️ для OSINT сообщества**
+## 🤝 Вклад в проект
+
+Pull requests приветствуются! Если вы нашли баг или хотите добавить новый модуль:
+1. Создайте Issue с описанием проблемы/идеи.
+2. Сделайте форк репозитория.
+3. Отправьте Pull Request в ветку `main`.
+
+---
+
+<div align="center">
+
+**Сделано с ❤️ для OSINT сообщества**  
+*ShadowEye — видит то, что скрыто в тени* 👁️
+
+[GitHub Repository](https://github.com/lixynhay/ShadowEye) | [PyPI Package](https://pypi.org/project/shadoweye/)
+
+</div>
